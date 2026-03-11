@@ -1,30 +1,33 @@
-"use client"
-
 import { redirect } from "next/navigation";
-import { useSession } from "@/lib/auth-client";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/prisma";
+import ConnectGithub from "./ConnectGithub";
 
-export default function Dashboard() {
-    const { data, isPending } = useSession()
+export default async function DashboardPage() {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
 
-    if (isPending) return null // or a loading spinner
-
-    if (!data) {
-        redirect("/sign-up")
+    if (!session?.user?.id) {
+        redirect("/sign-up");
     }
 
+    const userId = session.user.id;
+
+    const [user, repoCount] = await Promise.all([
+        db.user.findUnique({
+            where: { id: userId },
+            select: { syncStatus: true, lastSyncedAt: true },
+        }),
+        db.repo.count({ where: { userId } }),
+    ]);
+
     return (
-        <div style={{ padding: "2rem" }}>
-            <h1>Dashboard</h1>
-            {data.user.image && (
-                <img
-                    src={data.user.image}
-                    alt={data.user.name}
-                    style={{ width: 80, height: 80, borderRadius: "50%" }}
-                />
-            )}
-            <p style={{ fontSize: "1.25rem", marginTop: "1rem" }}>
-                GitHub Name: <strong>{data.user.name}</strong>
-            </p>
-        </div>
-    )
+        <ConnectGithub
+            syncStatus={user?.syncStatus ?? "IDLE"}
+            lastSyncedAt={user?.lastSyncedAt?.toISOString() ?? null}
+            repoCount={repoCount}
+        />
+    );
 }

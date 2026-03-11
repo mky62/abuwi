@@ -28,7 +28,7 @@ model User {
   emailVerified   Boolean
 
   image           String?
-  description     String?  @db.Text
+  description     String?  
 
   /// sync metadata
   lastSyncedAt    DateTime?
@@ -39,7 +39,9 @@ model User {
   updatedAt       DateTime  @updatedAt
   sessions        Session[]
   accounts        Account[]
-  repo            Repo[]
+
+  repo             Repo[]
+
   @@map("user")
 }
 
@@ -67,10 +69,14 @@ model Account {
   accessToken          String?
   refreshToken         String?
   idToken              String?
+
   accessTokenExpiresAt DateTime?
   refreshTokenExpiresAt DateTime?
+
   scope                String?
-  password             String?
+
+  repo                 Repo[]
+
   createdAt            DateTime
   updatedAt            DateTime
   @@map("account")
@@ -92,20 +98,20 @@ model Repo {
   userId          String
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  accountId       String
+  account         Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
   // GitHub identifiers
   githubRepoId    Int      @unique
-  nodeId          String
+  nodeId          String?
 
   // Repo naming
-  name            String
-  fullName        String   // owner/repo
-
+  name            String?
+  fullName        String?   // owner/repo
 
   // Metadata
   description     String?  @db.Text
-
   language        String?
-
 
   // Statistics
   stars           Int      @default(0)
@@ -113,18 +119,13 @@ model Repo {
 
   // URLs
   htmlUrl         String
+
   cachedAt        DateTime @default(now())
 
-
-
-  // internal timestamps
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  // relationship
-  githubAccountId String
-  githubAccount   GitHubAccount @relation(fields: [githubAccountId], references: [id])
-
-  @@index([githubAccountId])
+  @@index([userId])
+  @@index([accountId])
   @@index([githubRepoId])
 }
