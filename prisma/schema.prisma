@@ -13,29 +13,48 @@ datasource db {
   provider = "postgresql"
 }
 
+enum SyncStatus {
+  IDLE
+  SYNCING
+  SUCCESS
+  FAILED
+}
+
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  emailVerified Boolean
-  image         String?
-  createdAt     DateTime
-  updatedAt     DateTime
-  sessions      Session[]
-  accounts      Account[]
+  id              String    @id @default(cuid())
+  name            String
+  
+  email           String    @unique
+  emailVerified   Boolean
+
+  image           String?
+  description     String?  @db.Text
+
+  /// sync metadata
+  lastSyncedAt    DateTime?
+  syncStatus      SyncStatus @default(IDLE)
+  syncLockUntil   DateTime?
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  sessions        Session[]
+  accounts        Account[]
+  repo            Repo[]
   @@map("user")
 }
 
 model Session {
-  id        String   @id @default(cuid())
-  expiresAt DateTime
-  token     String   @unique
-  createdAt DateTime
-  updatedAt DateTime
-  ipAddress String?
-  userAgent String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  expiresAt   DateTime
+  token       String   @unique
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  ipAddress   String?
+  userAgent   String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@map("session")
 }
 
@@ -65,4 +84,47 @@ model Verification {
   createdAt  DateTime?
   updatedAt  DateTime?
   @@map("verification")
+}
+
+model Repo {
+  id              String   @id @default(cuid())
+
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // GitHub identifiers
+  githubRepoId    Int      @unique
+  nodeId          String
+
+  // Repo naming
+  name            String
+  fullName        String   // owner/repo
+
+
+  // Metadata
+  description     String?  @db.Text
+
+  language        String?
+
+
+  // Statistics
+  stars           Int      @default(0)
+  forks           Int      @default(0)
+
+  // URLs
+  htmlUrl         String
+  cachedAt        DateTime @default(now())
+
+
+
+  // internal timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // relationship
+  githubAccountId String
+  githubAccount   GitHubAccount @relation(fields: [githubAccountId], references: [id])
+
+  @@index([githubAccountId])
+  @@index([githubRepoId])
 }
