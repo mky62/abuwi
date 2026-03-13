@@ -43,7 +43,7 @@ export default function SignUpForm() {
                 {/* Header */}
                 <div className="text-center space-y-4">
                     <h1 className="text-2xl font-geom tracking-tight text-blue-900">
-                        RepoLens
+                        CodePatron
                     </h1>
 
                     <p className="text-md text-blue-800 flex justify-center items-center gap-1">
@@ -89,7 +89,7 @@ export default function SignUpForm() {
                 <p className="text-center text-sm font-light text-blue-800">
                     Be part of the{" "}
                     <span className="font-semibold underline cursor-pointer text-blue-900">
-                        <a href="/">RepoLens</a>
+                        <a href="/">CodePatron</a>
                     </span>{" "}
                     community
                 </p>
