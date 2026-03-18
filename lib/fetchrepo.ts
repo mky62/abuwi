@@ -1,3 +1,5 @@
+import { db } from "@/lib/prisma"
+
 export type Repo = {
     id: number
     full_name: string
@@ -40,4 +42,36 @@ export async function fetchRepo(
 
     if (!Array.isArray(json)) return [];
     return json as Repo[];
+}
+
+export type CachedRepo = {
+    id: string
+    name: string | null
+    fullName: string | null
+    description: string | null
+    language: string | null
+    stars: number
+    forks: number
+    htmlUrl: string
+    cachedAt: Date
+}
+
+export async function getCachedRepos(userId: string): Promise<CachedRepo[]> {
+    const repos = await db.repo.findMany({
+        where: { userId },
+        orderBy: { stars: "desc" },
+        select: {
+            id: true,
+            name: true,
+            fullName: true,
+            description: true,
+            language: true,
+            stars: true,
+            forks: true,
+            htmlUrl: true,
+            cachedAt: true,
+        },
+    })
+
+    return repos
 }

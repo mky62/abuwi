@@ -18,7 +18,8 @@ export default function SignUpForm() {
         redirect("/dashboard")
     }
 
-    const handleClick = () => {
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault()
         signIn.social({
             provider: "github",
             callbackURL: "/dashboard",
@@ -73,17 +74,18 @@ export default function SignUpForm() {
                     </p>
                 </div>
 
-                {/* Form */}
-                <form onSubmit={handleClick} className="max-w-sm mx-auto space-y-6">
 
-                    <Button
-                        onClick={handleClick}
-                        className="w-full py-6 cursor-pointer bg-blue-900 text-white"
-                    >
-                        <GitHubIcon /> Sign in with GitHub
-                    </Button>
+                <Button
+                    type="button"
+                    onClick={handleClick}
+                    className="w-full py-6 cursor-pointer bg-blue-900 text-white"
+                >
+                    <GitHubIcon /> Sign in with GitHub
+                </Button>
 
-                </form>
+
+
+
 
                 {/* Footer */}
                 <p className="text-center text-sm font-light text-blue-800">
