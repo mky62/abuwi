@@ -38,6 +38,7 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/prisma";
 import DashBg from '@/public/dashbg.jpg'
 import Image from 'next/image'
+import ProfileSection from "./components/ProfileSection"
 import { Star, GitFork, ExternalLink } from "lucide-react"
 import ConnectGithub from "./components/ConnectGithub"
 
@@ -84,14 +85,16 @@ export default async function DashboardPage() {
                 className="absolute inset-0 z-[-1] w-full h-full object-cover"
             />
             <div className="relative flex gap-2 h-screen w-full p-4">
-                <div className="w-1/4 border-blue-500 border-2 h-full rounded-xl p-2">
+                <div className="w-1/4 border-blue-500 border-2  h-full rounded-xl p-2">
                     <ConnectGithub
                         syncStatus={user?.syncStatus ?? "IDLE"}
                         lastSyncedAt={user?.lastSyncedAt?.toISOString() ?? null}
                         repoCount={repoCount}
                     />
+                    <ProfileSection />
                 </div>
                 <div className="w-2/4 border-blue-500 border-2 h-full rounded-xl ">
+
                 </div>
 
                 {/* Repos Panel */}
@@ -105,7 +108,7 @@ export default async function DashboardPage() {
                     <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
                         {repos.length === 0 ? (
                             <div className="flex flex-col items-center justify-center h-full text-gray-400 gap-2 p-6">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /></svg>
                                 <p className="text-sm">No repositories yet</p>
                             </div>
                         ) : (
