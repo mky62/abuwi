@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/packages/ui/button";
 
 type SyncStatus = "IDLE" | "SYNCING" | "SUCCESS" | "FAILED";
 
