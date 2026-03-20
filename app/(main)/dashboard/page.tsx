@@ -1,37 +1,3 @@
-// import { redirect } from "next/navigation";
-// import { headers } from "next/headers";
-// import { auth } from "@/lib/auth";
-// import { db } from "@/lib/prisma";
-// import ConnectGithub from "./ConnectGithub";
-
-// export default async function DashboardPage() {
-//     const session = await auth.api.getSession({
-//         headers: await headers(),
-//     });
-
-//     if (!session?.user?.id) {
-//         redirect("/sign-up");
-//     }
-
-//     const userId = session.user.id;
-
-//     const [user, repoCount] = await Promise.all([
-//         db.user.findUnique({
-//             where: { id: userId },
-//             select: { syncStatus: true, lastSyncedAt: true },
-//         }),
-//         db.repo.count({ where: { userId } }),
-//     ]);
-
-//     return (
-//         <ConnectGithub
-//             syncStatus={user?.syncStatus ?? "IDLE"}
-//             lastSyncedAt={user?.lastSyncedAt?.toISOString() ?? null}
-//             repoCount={repoCount}
-//         />
-//     );
-// }
-
 import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
@@ -39,6 +5,7 @@ import { db } from "@/lib/prisma";
 import DashBg from '@/public/dashbg.jpg'
 import Image from 'next/image'
 import ProfileSection from "./components/ProfileSection"
+import PitchSection from "./components/PitchSection"
 import { Star, GitFork, ExternalLink } from "lucide-react"
 import ConnectGithub from "./components/ConnectGithub"
 
@@ -93,7 +60,8 @@ export default async function DashboardPage() {
                     />
                     <ProfileSection />
                 </div>
-                <div className="w-2/4 border-blue-500 border-2 h-full rounded-xl ">
+                <div className="w-2/4 border-blue-500 border-2 overflow-hidden  h-full rounded-xl ">
+                    <PitchSection />
 
                 </div>
 
