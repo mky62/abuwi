@@ -228,7 +228,7 @@ export function SimpleEditor() {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
+    content: `<h2 className="text-gray-400">Start Pitching...</h2>`,
   })
 
   const rect = useCursorVisibility({

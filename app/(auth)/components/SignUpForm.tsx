@@ -6,7 +6,7 @@ import AuthBg from "@/public/signinbg.jpg"
 import Image from "next/image"
 import { signIn, useSession } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/packages/ui/button"
 
 export default function SignUpForm() {
 
