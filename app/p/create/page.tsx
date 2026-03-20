@@ -1,5 +1,5 @@
 import Tiptap from "../components/Tiptap"
-import { SimpleEditor } from '@/components/tiptap-templates/simple/simple-editor'
+import { SimpleEditor } from "@/packages/tiptap/components/tiptap-templates/simple/simple-editor"
 
 
 export default function Create() {
