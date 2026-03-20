@@ -1,5 +1,4 @@
 import Tiptap from "../components/Tiptap"
-import { SimpleEditor } from "@/packages/tiptap/components/tiptap-templates/simple/simple-editor"
 
 
 export default function Create() {
@@ -9,7 +8,7 @@ export default function Create() {
         <h1 className="mb-8 text-3xl font-bold tracking-tight text-foreground">
           Create Post
         </h1>
-        <SimpleEditor />
+
       </div>
     </div>
   )
