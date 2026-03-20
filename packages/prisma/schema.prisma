@@ -41,6 +41,7 @@ model User {
   accounts        Account[]
 
   repo             Repo[]
+  post             Post[]
 
   @@map("user")
 }
@@ -128,4 +129,21 @@ model Repo {
   @@index([userId])
   @@index([accountId])
   @@index([githubRepoId])
+}
+
+model Post {
+  id              String  @id @default(cuid())
+
+  userId          String 
+  user            User    @relation(fields: [userId], references: [id] , onDelete: Cascade)
+
+  title           String
+  projectLink     String?
+  content         String  @db.Text
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@map("post")
 }
