@@ -13,6 +13,7 @@ import { Highlight } from "@tiptap/extension-highlight"
 import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
 import { Selection } from "@tiptap/extensions"
+import type { JSONContent } from '@tiptap/react'
 
 // --- UI Primitives ---
 import { Button } from "@/packages/tiptap/components/tiptap-ui-primitive/button"
@@ -183,7 +184,15 @@ const MobileToolbarContent = ({
   </>
 )
 
-export function SimpleEditor() {
+export function SimpleEditor(
+  {
+    content,
+    onChange,
+  }: {
+    content?: JSONContent | string;
+    onChange?: (content: JSONContent) => void;
+  }
+) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
@@ -191,8 +200,15 @@ export function SimpleEditor() {
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
 
+
   const editor = useEditor({
     immediatelyRender: false,
+
+    content,
+    onUpdate: ({ editor }) => {
+      onChange?.(editor.getJSON());
+    },
+
     editorProps: {
       attributes: {
         autocomplete: "off",
@@ -228,7 +244,6 @@ export function SimpleEditor() {
         onError: (error) => console.error("Upload failed:", error),
       }),
     ],
-    content,
   })
 
   const rect = useCursorVisibility({

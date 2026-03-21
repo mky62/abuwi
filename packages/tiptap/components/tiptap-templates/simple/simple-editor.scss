@@ -1,83 +1,50 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
-body {
-  --tt-toolbar-height: 44px;
-  --tt-theme-text: var(--tt-gray-light-900);
-
-  .dark & {
-    --tt-theme-text: var(--tt-gray-dark-900);
-  }
-}
-
-body {
-  font-family: "Inter", sans-serif;
-  color: var(--tt-theme-text);
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  padding: 0;
-  overscroll-behavior-y: none;
-}
-
-html,
-body {
-  overscroll-behavior-x: none;
-}
-
-html,
-body,
-#root,
-#app {
-  height: 100%;
-  background-color: var(--tt-bg-color);
-}
-
-::-webkit-scrollbar {
-  width: 0.25rem;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--tt-scrollbar-color) transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--tt-scrollbar-color);
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
 .tiptap.ProseMirror {
-  font-family: "DM Sans", sans-serif;
+  font-family: inherit;
+  outline: none !important;
+  color: inherit;
 }
 
 .simple-editor-wrapper {
-  margin: 0 auto;
-  width: 70vw;
-  height: 100vh;
-  overflow: auto;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Ensure the toolbar blends beautifully */
+.tiptap-toolbar {
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  background-color: transparent;
+  border: 1px solid var(--border) !important;
+  margin-bottom: 1rem;
+  box-shadow: none;
 }
 
 .simple-editor-content {
-  max-width: 648px;
   width: 100%;
-  margin: 0 auto;
-  height: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  overflow: hidden;
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
   flex: 1;
-  padding: 3rem 3rem 30vh;
+  overflow-y: auto;
+  padding: 1rem 1rem 30vh 1rem;
+  font-size: 1.125rem;
+  line-height: 1.75;
 }
 
-@media screen and (max-width: 480px) {
-  .simple-editor-content .tiptap.ProseMirror.simple-editor {
-    padding: 1rem 1.5rem 30vh;
-  }
+/* Basic Tiptap overrides for cleaner typography */
+.tiptap p.is-editor-empty:first-child::before {
+  color: #a1a1aa;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }

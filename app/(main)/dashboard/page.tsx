@@ -42,6 +42,8 @@ import ProfileSection from "./components/ProfileSection"
 import { Star, GitFork, ExternalLink } from "lucide-react"
 import ConnectGithub from "./components/ConnectGithub"
 import SocialLinks from "./components/SocialLinks"
+import { Button } from "@/packages/ui/button"
+import Link from "next/link";
 
 export default async function DashboardPage() {
 
@@ -96,7 +98,9 @@ export default async function DashboardPage() {
                     <SocialLinks />
                 </div>
                 <div className="w-2/4 border-blue-500 border-2 h-full rounded-xl ">
-
+                    <Link href="/p/create">
+                        <Button>Create Post</Button>
+                    </Link>
                 </div>
 
                 {/* Repos Panel */}
